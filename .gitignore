@@ -1,0 +1,6 @@
+exercises/
+solutions/
+*database.db
+*app.log
+*__pycache__/
+.vagrant/
