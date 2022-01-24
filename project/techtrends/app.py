@@ -1,13 +1,19 @@
-import sqlite3
+import logging, sqlite3, sys
 
+from datetime import datetime
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+
+# Global `connection counter` variable
+connection_counter = 0 
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
+    global connection_counter
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
+    connection_counter += 1
     return connection
 
 # Function to get a post using its ID
@@ -36,13 +42,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      return render_template('404.html'), 404
+        app.logger.info("Status: 404, Article with id: {} does not exist!".format(post_id))
+        return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+        app.logger.info("Article \"{}\" retrieved!".format(post['title']))
+        return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.info("About Us\" retrieved!")
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -61,10 +70,51 @@ def create():
             connection.commit()
             connection.close()
 
+            app.logger.info("A new article \"{}\" has been created!".format(title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
 
-# start the application on port 3111
+# Define the Healthz page
+@app.route('/healthz')
+def healthcheck():
+    response = app.response_class(
+        response = json.dumps({"result":"OK - healthy"}),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    return response
+
+# Define the Metrics page
+@app.route('/metrics')
+def metrics():
+    connection = get_db_connection()
+    post_count = len(connection.execute('SELECT * FROM posts').fetchall())
+    connection.close()
+
+    response = app.response_class(
+        response = json.dumps({"db_connection_count": connection_counter, "post_count":post_count}),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    return response
+
+# Start the application on port 3111
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port='3111')
+    # Stream logs to app.log file   
+    logger = logging.getLogger(__name__) 
+    # Set logger STDOUT handler
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setLevel(logging.DEBUG)
+    
+    # Set logger STDERROR handler
+    stderr_handler = logging.StreamHandler(sys.stderr)
+    stderr_handler.setLevel(logging.ERROR)
+
+    handlers = [stdout_handler, stderr_handler]
+
+    # Format output of logged message
+    format_log_output = ('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+    logging.basicConfig(format=format_log_output, level=logging.DEBUG, handlers=handlers)
+    
+    app.run(host='0.0.0.0', port='3111')
