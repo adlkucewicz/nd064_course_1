@@ -12,3 +12,30 @@ docker logs [CONTAINER_ID] -f
 
 ## Logs from the container running the TechTrends application
 # TODO: paste logs from the Docker container 
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+INFO:2022-01-24 06:40:53,112:werkzeug: * Running on http://0.0.0.0:3111/ (Press CTRL+C to quit)
+INFO:2022-01-24 06:44:30,029:werkzeug:172.17.0.1 - - [24/Jan/2022 06:44:30] "GET / HTTP/1.1" 200 -
+INFO:2022-01-24 06:44:30,060:werkzeug:172.17.0.1 - - [24/Jan/2022 06:44:30] "GET /static/css/main.css HTTP/1.1" 200 -
+INFO:2022-01-24 06:44:30,084:werkzeug:172.17.0.1 - - [24/Jan/2022 06:44:30] "GET /favicon.ico HTTP/1.1" 404 -
+INFO:2022-01-24 06:47:43,693:app:Article "KubeCon + CloudNativeCon 2021" retrieved!
+INFO:2022-01-24 06:47:43,704:werkzeug:172.17.0.1 - - [24/Jan/2022 06:47:43] "GET /2 HTTP/1.1" 200 -
+INFO:2022-01-24 06:47:54,846:app:About Us" retrieved!
+INFO:2022-01-24 06:47:54,849:werkzeug:172.17.0.1 - - [24/Jan/2022 06:47:54] "GET /about HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:01,918:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:01] "GET / HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:06,563:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:06] "GET /create HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:18,129:app:A new article "Test Title 1" has been created!
+INFO:2022-01-24 06:48:18,131:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:18] "POST /create HTTP/1.1" 302 -
+INFO:2022-01-24 06:48:18,144:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:18] "GET / HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:23,554:app:Article "Test Title 1" retrieved!
+INFO:2022-01-24 06:48:23,554:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:23] "GET /7 HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:27,769:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:27] "GET / HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:34,932:app:Status: 404, Article with id: 56789 does not exist!
+INFO:2022-01-24 06:48:34,935:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:34] "GET /56789 HTTP/1.1" 404 -
+INFO:2022-01-24 06:48:41,711:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:41] "GET /metrics HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:48,964:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:48] "GET /healthz HTTP/1.1" 200 -
+INFO:2022-01-24 06:48:56,646:werkzeug:172.17.0.1 - - [24/Jan/2022 06:48:56] "GET / HTTP/1.1" 200 -
+
